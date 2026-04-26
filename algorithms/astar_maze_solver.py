@@ -68,30 +68,34 @@ def astar_maze_solver(maze, start, end):
         distance[queue[i][0]] = current_weight + queue[i][1]
         prev_nodes[queue[i][0]] = actual
 
+    if len(queue) == 0:
+      break
+
     actual = queue[0][0]
 
     queue = dict(queue[1:])
 
-  actual = end
-  while actual != start:
-    path.append(actual)
-    actual = prev_nodes[tuple(actual)]
+  if tuple(end) in prev_nodes and prev_nodes[tuple(end)] is not None:
+    actual = end
+    while actual != start:
+      path.append(actual)
+      actual = prev_nodes[tuple(actual)]
 
   path.append(start)
 
   for i in range(len(path)):
     if i < len(path)-1:
       actual = path[i]
-      next = path[i+1]
-      if actual[0] == next[0]:
-        if actual[1] < next[1]:
+      next_node = path[i+1]
+      if actual[0] == next_node[0]:
+        if actual[1] < next_node[1]:
           maze[actual[0]][actual[1]+1] = '2'
-        elif actual[1] > next[1]:
+        elif actual[1] > next_node[1]:
           maze[actual[0]][actual[1]-1] = '2'
-      elif actual[1] == next[1]:
-        if actual[0] < next[0]:
+      elif actual[1] == next_node[1]:
+        if actual[0] < next_node[0]:
           maze[actual[0]+1][actual[1]] = '2'
-        elif actual[0] > next[0]:
+        elif actual[0] > next_node[0]:
           maze[actual[0]-1][actual[1]] = '2'
 
     maze[path[i][0]][path[i][1]] = '2'
