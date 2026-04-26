@@ -1,82 +1,154 @@
 <!-- PROJECT LOGO -->
+
 <br />
 <div align="center">
-  <a href="https://github.com/YeyoM/mazeSolver">
+  <a href="https://github.com/RAkSHITH256/maze-solver-visualizer">
     <img src="public/icon.svg" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Maze Solver</h3>
+<h3 align="center">Maze Solver Visualizer</h3>
 
   <p align="center">
-    Generate and solve a maze with Python.
+    Generate and solve a maze with Python (Enhanced Version).
     <br />
-    <a href="https://github.com/YeyoM/mazeSolver"><strong>Explore the code »</strong></a>
+    <a href="https://github.com/RAkSHITH256/maze-solver-visualizer"><strong>Explore the code »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/YeyoM/mazeSolver/issues">Report Bug</a>
   </p>
 </div>
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+---
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/YeyoM/mazeSolver)
+## 📌 About The Project
 
-### What does this project do?
+This project is an **enhanced version** of the original Maze Solver.
+It demonstrates maze generation and solving using multiple algorithms.
 
-This project uses various techniques to generate and solve a maze using python in an easy way, to generate the maze we follow the following steps:
+### 🔧 My Contributions
 
-- Generate a matrix full of 0's which represents obtacles
-- Generate a grid in the matrix with 1's which representes paths that the algorithm will be able to follow
-- Using DFS we "carve" the maze generating paths between spaces in the grid which, seen from a graph approach, the spaces in the grid are nodes, the objective is to connect this nodes.
+* Improved structure and readability
+* Preparing for frontend visualization
+* Future enhancements planned (UI, animations)
 
-For the solution part, there are available 4 algorithms
+---
 
-#### DFS and BFS
+### 🔍 What does this project do?
 
-BFS, Breadth-First Search, is a vertex-based technique for finding the shortest path in the graph. It uses a Queue data structure that follows first in first out. In BFS, one vertex is selected at a time when it is visited and marked then its adjacent are visited and stored in the queue. It is slower than DFS. 
+This project uses various techniques to generate and solve a maze using Python.
 
-DFS, Depth First Search, is an edge-based technique. It uses the Stack data structure and performs two stages, first visited vertices are pushed into the stack, and second if there are no vertices then visited vertices are popped. 
+* Generate a matrix full of 0's (obstacles)
+* Generate a grid with 1's (paths)
+* Use **DFS** to carve the maze and connect nodes
 
-#### Dijkstra
+---
 
-Dijkstra's algorithm allows us to find the shortest path between any two vertices of a graph. Djikstra used this property in the opposite direction i.e we overestimate the distance of each vertex from the starting vertex. Then we visit each node and its neighbors to find the shortest subpath to those neighbors.
+## ⚙️ Algorithms Used
 
-The algorithm uses a greedy approach in the sense that we find the next best solution hoping that the end result is the best solution for the whole problem.
+### 🔹 DFS and BFS
 
-#### A* Star
+**BFS (Breadth-First Search)**
 
-Informally speaking, A* Search algorithms, unlike other traversal techniques, it has “brains” (in the code is called heuristic). What it means is that it is really a smart algorithm which separates it from the other conventional algorithms. This fact is cleared in detail in below sections. 
-And it is also worth mentioning that many games and web-based maps use this algorithm to find the shortest path very efficiently (approximation). 
+* Uses Queue (FIFO)
+* Guarantees shortest path
+* Slower compared to DFS
 
-<!-- GETTING STARTED -->
-## Getting Started
+**DFS (Depth-First Search)**
 
-To get a local copy up and running follow these simple example steps.
+* Uses Stack
+* Explores deeply before backtracking
+* Faster but not optimal
 
-### Prerequisites
+---
 
-- Have python installed in your computer
+### 🔹 Dijkstra
 
-- Install with pip the following: random, numpy and time.
+* Finds shortest path using weighted graph
+* Uses greedy approach
+* Guarantees optimal path
 
-- Clone the repo
-   ```sh
-    git clone https://github.com/YeyoM/mazeSolver.git
-   ```
-- The entry point of the code is main.py
+---
 
-<!-- LICENSE -->
-## License
+### 🔹 A* Star
 
-Distributed under the MIT License. See LICENSE.txt for more information.
+* Uses heuristic (smart search)
+* Faster than Dijkstra in most cases
+* Widely used in games and maps
 
-<!-- CONTACT -->
-## Contact
+---
 
-YeyoM - [@YeyoMoreno24](https://twitter.com/YeyoMoreno24) - yeyomoreno2003@hotmail.com
+## 🚀 Getting Started
 
-Maze Solver - [https://github.com/YeyoM/mazeSolver](https://github.com/YeyoM/mazeSolver)
+### ✅ Prerequisites
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[product-screenshot]: public/screenshot.png
+* Python installed
+
+Install dependencies:
+
+```bash
+pip install numpy
+```
+
+---
+
+### 📥 Installation
+
+Clone this repository:
+
+```bash
+git clone https://github.com/RAkSHITH256/maze-solver-visualizer.git
+```
+
+Go to project folder:
+
+```bash
+cd maze-solver-visualizer
+```
+
+Run the project:
+
+```bash
+python main.py
+```
+
+---
+
+## 📸 Screenshot
+
+![Product Screenshot](public/screenshot.png)
+
+---
+
+## 🚀 Future Improvements
+
+* Add frontend UI (HTML / React)
+* Visual animation of maze solving
+* User input controls
+* Performance comparison of algorithms
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+---
+
+## 🙌 Credits
+
+This project is based on the original work:
+
+👉 https://github.com/YeyoM/mazeSolver
+
+**Original Author:** Diego Moreno
+**Modified & Extended by:** Rakshith C
+
+---
+
+## 📬 Contact
+
+Rakshith C
+GitHub: https://github.com/RAkSHITH256
+
+---
+
+⭐ If you like this project, give it a star!
