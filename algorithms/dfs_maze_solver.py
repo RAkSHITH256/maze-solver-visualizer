@@ -11,46 +11,41 @@ def dfs_maze_solver(maze, start, end):
   """
   
   visited = []
-  stack = []
-  neighbours = []
+  stack = [start]
+  path_found = False
   
-  actual = start
-  
-  while True:
-    visited.append(actual)
-  
-    # Obtener neighbours
+  while stack:
+    actual = stack[-1]
+    
+    if actual not in visited:
+      visited.append(actual)
+      
+    if actual == end:
+      path_found = True
+      break
+      
     neighbours = get_neighbours_for_search(maze, actual[0], actual[1], visited)
-
+    
     if neighbours:
       neighbour = random.choice(neighbours)
-      visited.append(neighbour)
-      stack.append(actual)
-      actual = neighbour
-  
+      stack.append(neighbour)
     else:
-      if stack:
-        actual = stack.pop()
-      else:
-        break
-  
-    if actual == end:
-      break
+      stack.pop()
 
-  for i in range(len(visited)):
-    if i < len(visited)-1:
-      actual = visited[i]
-      next = visited[i+1]
-      # Obtener la coordenada entre visited[i] y visited[i+1]
-      if actual[0] == next[0]:
-        if actual[1] < next[1]:
-          maze[actual[0]][actual[1]+1] = '2'
-        elif actual[1] > next[1]:
-          maze[actual[0]][actual[1]-1] = '2'
-      elif actual[1] == next[1]:
-        if actual[0] < next[0]:
-          maze[actual[0]+1][actual[1]] = '2'
-        elif actual[0] > next[0]:
-          maze[actual[0]-1][actual[1]] = '2'
+  if path_found:
+    for i in range(len(stack)):
+      if i < len(stack)-1:
+        actual = stack[i]
+        next_node = stack[i+1]
+        if actual[0] == next_node[0]:
+          if actual[1] < next_node[1]:
+            maze[actual[0]][actual[1]+1] = '2'
+          elif actual[1] > next_node[1]:
+            maze[actual[0]][actual[1]-1] = '2'
+        elif actual[1] == next_node[1]:
+          if actual[0] < next_node[0]:
+            maze[actual[0]+1][actual[1]] = '2'
+          elif actual[0] > next_node[0]:
+            maze[actual[0]-1][actual[1]] = '2'
 
-    maze[visited[i][0]][visited[i][1]] = '2'
+      maze[stack[i][0]][stack[i][1]] = '2'

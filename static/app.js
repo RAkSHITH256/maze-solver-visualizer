@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nc = curr.c + d[1];
                 
                 if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-                    if (mazeGrid[nr][nc] !== '0' && !visited.has(`${nr},${nc}`)) {
+                    if (mazeGrid[nr][nc] === '2' && !visited.has(`${nr},${nc}`)) {
                         visited.add(`${nr},${nc}`);
                         queue.push([...path, {r: nr, c: nc}]);
                     }
@@ -291,6 +291,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentMaze) return;
         setLoading(true);
         
+        // Clear any existing solution before solving again
+        clearSolution();
+        
         try {
             const algo = algorithmSelect.value;
             const response = await fetch('/api/maze/solve', {
@@ -328,6 +331,121 @@ document.addEventListener('DOMContentLoaded', () => {
             setLoading(false);
         }
     };
+
+    const compareBtn = document.getElementById('compare-btn');
+    const compareModal = document.getElementById('compare-modal');
+    const closeModal = document.getElementById('close-modal');
+    const comparisonGrid = document.getElementById('comparison-grid');
+    const fastestAlgoName = document.getElementById('fastest-algo-name');
+    const shortestAlgoName = document.getElementById('shortest-algo-name');
+
+    const renderMiniMaze = (maze, container) => {
+        const rows = maze.length;
+        const cols = maze[0].length;
+        container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const cell = document.createElement('div');
+                cell.classList.add('mini-cell');
+                const val = maze[i][j];
+                if (val === '0') cell.classList.add('wall');
+                else if (val === '1') cell.classList.add('path');
+                else if (val === '2') cell.classList.add('solution');
+                
+                if (i === 1 && j === 1) cell.classList.add('start');
+                else if (i === rows - 2 && j === cols - 2) cell.classList.add('end');
+                
+                fragment.appendChild(cell);
+            }
+        }
+        container.appendChild(fragment);
+    };
+
+    const compareAlgorithms = async () => {
+        if (!currentMaze) return;
+        setLoading(true);
+        compareBtn.innerHTML = '<span>⚡ Running Comparison...</span>';
+        
+        try {
+            const response = await fetch('/api/maze/compare', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ maze: currentMaze })
+            });
+            
+            const results = await response.json();
+            comparisonGrid.innerHTML = '';
+            
+            let fastest = { name: '', time: Infinity };
+            let shortest = { name: '', length: Infinity };
+            
+            const algoNames = {
+                'dfs': 'Depth-First Search',
+                'bfs': 'Breadth-First Search',
+                'dijkstra': "Dijkstra's Algorithm",
+                'astar': 'A* Search',
+                'aco': 'Ant Colony Optimization',
+                'ga': 'Genetic Algorithm',
+                'pso': 'Particle Swarm Optimization'
+            };
+
+            Object.entries(results).forEach(([key, data]) => {
+                const name = algoNames[key];
+                if (data.time < fastest.time) fastest = { name, time: data.time };
+                if (data.pathLength < shortest.length) shortest = { name, length: data.pathLength };
+                
+                const card = document.createElement('div');
+                card.className = 'algo-card';
+                card.innerHTML = `
+                    <div class="algo-card-header">
+                        <h3>${name}</h3>
+                    </div>
+                    <div class="mini-maze-container" id="mini-maze-${key}"></div>
+                    <div class="algo-metrics">
+                        <div class="metric">
+                            <span class="metric-label">⏱ Time</span>
+                            <span class="metric-value">${data.time.toFixed(3)} ms</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">📏 Path Length</span>
+                            <span class="metric-value path">${data.pathLength} cells</span>
+                        </div>
+                    </div>
+                `;
+                comparisonGrid.appendChild(card);
+                renderMiniMaze(data.maze, card.querySelector('.mini-maze-container'));
+            });
+
+            fastestAlgoName.textContent = fastest.name.toUpperCase();
+            shortestAlgoName.textContent = shortest.name.toUpperCase();
+            
+            compareModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+
+        } catch (error) {
+            console.error('Error comparing algorithms:', error);
+            alert('Failed to compare algorithms.');
+        } finally {
+            setLoading(false);
+            compareBtn.innerHTML = '<span>⚡ Compare Algorithms</span>';
+        }
+    };
+
+    compareBtn.addEventListener('click', compareAlgorithms);
+    closeModal.addEventListener('click', () => {
+        compareModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === compareModal) {
+            compareModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     generateBtn.addEventListener('click', generateMaze);
     solveBtn.addEventListener('click', solveMaze);

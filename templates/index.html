@@ -12,9 +12,9 @@
     <div class="container">
         <!-- App Switcher Nav -->
         <nav class="app-switcher">
-            <div class="app-tab active" data-theme="theme-game" title="Game AI Pathfinding">
+            <div class="app-tab active" data-theme="theme-game" title="Game Pathfinding">
                 <span class="app-icon">👾</span>
-                <span class="app-label">Game AI</span>
+                <span class="app-label">Game </span>
             </div>
             <div class="app-tab" data-theme="theme-gps" title="Smart Navigation Systems (GPS Routing)">
                 <span class="app-icon">🗺️</span>
@@ -58,6 +58,9 @@
                             <option value="bfs">Breadth-First Search (BFS)</option>
                             <option value="dijkstra">Dijkstra's Algorithm</option>
                             <option value="astar">A* Search</option>
+                            <option value="aco">Ant Colony Optimization (ACO)</option>
+                            <option value="ga">Genetic Algorithm (GA)</option>
+                            <option value="pso">Particle Swarm Optimization (PSO)</option>
                         </select>
                     </div>
                 </div>
@@ -99,6 +102,9 @@
                     <button id="export-btn" class="btn export-btn">
                         <span>📸 Export Image</span>
                     </button>
+                    <button id="compare-btn" class="btn primary-btn compare-btn">
+                        <span>⚡ Compare Algorithms</span>
+                    </button>
                 </div>
             </div>
 
@@ -124,6 +130,31 @@
                 <div class="placeholder-text">Generating maze...</div>
             </div>
         </main>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="compare-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><span class="icon">⚡</span> Algorithm Comparison</h2>
+                <button id="close-modal" class="close-btn">&times;</button>
+            </div>
+            
+            <div class="comparison-summary">
+                <div id="fastest-badge" class="badge fastest">
+                    <span class="badge-icon">🏆</span>
+                    <span class="badge-text">Fastest: <strong id="fastest-algo-name">-</strong></span>
+                </div>
+                <div id="shortest-badge" class="badge shortest">
+                    <span class="badge-icon">🎯</span>
+                    <span class="badge-text">Shortest Path: <strong id="shortest-algo-name">-</strong></span>
+                </div>
+            </div>
+
+            <div class="comparison-grid" id="comparison-grid">
+                <!-- Algorithm result cards will be injected here -->
+            </div>
+        </div>
     </div>
 
     <script src="/static/app.js"></script>

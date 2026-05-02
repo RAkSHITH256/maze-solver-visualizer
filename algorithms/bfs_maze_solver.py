@@ -11,44 +11,49 @@ def bfs_maze_solver(maze, start, end):
   """
   
   visited = []
-  queue = []
-  neighbours = []
+  queue = [start]
+  parent = {tuple(start): None}
+  path_found = False
   
-  actual = start
-  
-  while True:
-    visited.append(actual)
-  
-    neighbours = get_neighbours_for_search(maze, actual[0], actual[1], visited)
-
-    if neighbours:
-      neighbour = random.choice(neighbours)
-      visited.append(neighbour)
-      queue.append(actual)
-      actual = neighbour
-  
-    else:
-      if queue:
-        actual = queue.pop(0)
-      else:
-        break
-  
+  while queue:
+    actual = queue.pop(0)
+    
+    if actual not in visited:
+      visited.append(actual)
+      
     if actual == end:
+      path_found = True
       break
+      
+    neighbours = get_neighbours_for_search(maze, actual[0], actual[1], visited)
+    
+    for neighbour in neighbours:
+      if neighbour not in visited and neighbour not in queue:
+        queue.append(neighbour)
+        parent[tuple(neighbour)] = actual
 
-  for i in range(len(visited)):
-    if i < len(visited)-1:
-      actual = visited[i]
-      next = visited[i+1]
-      if actual[0] == next[0]:
-        if actual[1] < next[1]:
-          maze[actual[0]][actual[1]+1] = '2'
-        elif actual[1] > next[1]:
-          maze[actual[0]][actual[1]-1] = '2'
-      elif actual[1] == next[1]:
-        if actual[0] < next[0]:
-          maze[actual[0]+1][actual[1]] = '2'
-        elif actual[0] > next[0]:
-          maze[actual[0]-1][actual[1]] = '2'
+  if path_found:
+    path = []
+    curr = tuple(end)
+    while curr is not None:
+      path.append(list(curr))
+      curr = parent.get(tuple(curr))
+    
+    path.reverse()
+    
+    for i in range(len(path)):
+      if i < len(path)-1:
+        actual = path[i]
+        next_node = path[i+1]
+        if actual[0] == next_node[0]:
+          if actual[1] < next_node[1]:
+            maze[actual[0]][actual[1]+1] = '2'
+          elif actual[1] > next_node[1]:
+            maze[actual[0]][actual[1]-1] = '2'
+        elif actual[1] == next_node[1]:
+          if actual[0] < next_node[0]:
+            maze[actual[0]+1][actual[1]] = '2'
+          elif actual[0] > next_node[0]:
+            maze[actual[0]-1][actual[1]] = '2'
 
-    maze[visited[i][0]][visited[i][1]] = '2'
+      maze[path[i][0]][path[i][1]] = '2'
